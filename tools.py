@@ -1,6 +1,6 @@
-import csv
+import csv, datetime
 
-path_vendas = 'C:/Users/victor.costa/PycharmProjects/formulário/venv/dadosvendas.csv'
+path_vendas = '//srvdoc/Documentos/Comum/TI/chamados/maxichamados.csv'
 
 # Lê CSV e retorna lista
 def read_csv(path):
@@ -20,8 +20,10 @@ def write_csv(path, data):
     return id
 
 def write_calling(path, name, depto, problem):
+    now = datetime.datetime.now()
     with open(path, 'a', newline= '') as csv_file:
         data = read_csv(path)
         id = 1 if not data else int(data[-1][3]) + 1
         csv.writer(csv_file).writerow(
-            [name, problem, depto, id, 0, '', ''])
+            [name, problem, depto, id, 0, now.strftime("%H:%M"), now.strftime("%d-%m-%Y"),'', '', '', ''])
+        return id
