@@ -1,31 +1,28 @@
-import tkinter as tk
-import tkinter.scrolledtext as tkst
+from tkinter import *
+import threading
 
-win = tk.Tk()
-frame1 = tk.Frame(
-    master = win,
-    bg = '#808000'
-)
-frame1.pack(fill='both', expand='yes')
-editArea = tkst.ScrolledText(
-    master = frame1,
-    wrap   = tk.WORD,
-    width  = 20,
-    height = 10
-)
-# Don't use widget.place(), use pack or grid instead, since
-# They behave better on scaling the window -- and you don't
-# have to calculate it manually!
-editArea.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
-# Adding some text, to see if scroll is working as we expect it
-editArea.insert(tk.INSERT,
-"""\
-Integer posuere erat a ante venenatis dapibus.
-Posuere velit aliquet.
-Aenean eu leo quam. Pellentesque ornare sem.
-Lacinia quam venenatis vestibulum.
-Nulla vitae elit libero, a pharetra augue.
-Cum sociis natoque penatibus et magnis dis.
-Parturient montes, nascetur ridiculus mus.
-""")
-win.mainloop()
+class App(threading.Thread):
+
+    def __init__(self, tk_root):
+        print(type(self))
+        self.root = tk_root
+        threading.Thread.__init__(self)
+        self.start()
+
+    def run(self):
+        loop_active = True
+        while loop_active:
+            user_input = input("Give me your command! Just type \"exit\" to close: ")
+            if user_input == "exit":
+                loop_active = False
+                self.root.quit()
+                self.root.update()
+            else:
+                label = Label(self.root, text=user_input)
+                label.pack()
+
+ROOT = Tk()
+APP = App(ROOT)
+LABEL = Label(ROOT, text="Hello, world!")
+LABEL.pack()
+ROOT.mainloop()
