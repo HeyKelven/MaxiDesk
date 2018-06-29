@@ -1,12 +1,13 @@
 from tkinter import *
 import threading
 
+
 class App(threading.Thread):
 
-    def __init__(self, tk_root):
-        print(type(self))
+    def __init__(self, tk_root, count):
         self.root = tk_root
         threading.Thread.__init__(self)
+        self.count = count
         self.start()
 
     def run(self):
@@ -19,10 +20,13 @@ class App(threading.Thread):
                 self.root.update()
             else:
                 label = Label(self.root, text=user_input)
-                label.pack()
+                label.grid(row=self.count)
+                self.count += 1
+
 
 ROOT = Tk()
-APP = App(ROOT)
+i = 2
 LABEL = Label(ROOT, text="Hello, world!")
-LABEL.pack()
+LABEL.grid(row=1)
+APP = App(ROOT, i)
 ROOT.mainloop()
